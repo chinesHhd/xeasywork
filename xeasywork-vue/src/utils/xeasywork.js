@@ -1,6 +1,8 @@
+
+
 /**
  * 通用js方法封装处理
- * Copyright (c) 2019
+ * Copyright (c) 2019 XEasyWork
  */
 
 // 日期格式化
@@ -84,7 +86,7 @@ export function selectDictLabel(datas, value) {
   return actions.join('');
 }
 
-// 回显数据字典（字符串、数组）
+// 回显数据字典（字符串数组）
 export function selectDictLabels(datas, value, separator) {
   if (value === undefined || value.length ===0) {
     return "";
@@ -163,19 +165,37 @@ export function handleTree(data, id, parentId, children) {
   };
 
   var childrenListMap = {};
+  var nodeIds = {};
   var tree = [];
+
   for (let d of data) {
-    let id = d[config.id];
-    childrenListMap[id] = d;
+    let parentId = d[config.parentId];
+    if (childrenListMap[parentId] == null) {
+      childrenListMap[parentId] = [];
+    }
+    nodeIds[d[config.id]] = d;
+    childrenListMap[parentId].push(d);
   }
 
   for (let d of data) {
-    let parentId = d[config.parentId]
-    let parentObj = childrenListMap[parentId]
-    if (!parentObj) {
+    let parentId = d[config.parentId];
+    if (nodeIds[parentId] == null) {
       tree.push(d);
-    } else {
-      parentObj[config.childrenList].push(d)
+    }
+  }
+
+  for (let t of tree) {
+    adaptToChildrenList(t);
+  }
+
+  function adaptToChildrenList(o) {
+    if (childrenListMap[o[config.id]] !== null) {
+      o[config.childrenList] = childrenListMap[o[config.id]];
+    }
+    if (o[config.childrenList]) {
+      for (let c of o[config.childrenList]) {
+        adaptToChildrenList(c);
+      }
     }
   }
   return tree;
@@ -206,6 +226,7 @@ export function tansParams(params) {
   }
   return result
 }
+
 
 // 返回项目路径
 export function getNormalPath(p) {

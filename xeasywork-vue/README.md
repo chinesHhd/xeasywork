@@ -2,7 +2,7 @@
 
 ```bash
 # 进入项目目录
-cd tinyflow-ui
+cd xeasywork-vue
 
 # 安装依赖
 npm install
