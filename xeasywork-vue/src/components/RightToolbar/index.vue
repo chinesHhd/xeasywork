@@ -80,7 +80,7 @@ export default {
     }
   },
   created() {
-    if (this.showColumnsType == 'transfer') {
+    if (this.showColumnsType === 'transfer') {
       // 显隐列初始默认隐藏列
       for (let item in this.columns) {
         if (this.columns[item].visible === false) {
