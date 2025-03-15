@@ -129,6 +129,20 @@ export const dynamicRoutes = [
         meta: { title: '字典数据', activeMenu: '/system/dict' }
       }
     ]
+  },
+  {
+    path: '/ai/flow-tinyflow',
+    component: Layout,
+    hidden: true,
+    permissions: ['ai:flow:list'],
+    children: [
+      {
+        path: 'index/:id(\\d+)',
+        component: () => import('@/views/ai/flow/thiyflow'),
+        name: 'TinyFlow',
+        meta: { title: '流程搭建', activeMenu: '/ai/flow' }
+      }
+    ]
   }
 ]
 

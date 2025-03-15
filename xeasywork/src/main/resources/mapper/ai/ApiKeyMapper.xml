@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xeasywork.tinyflow.mapper.ai.ApiKeyMapper">
+
+	<resultMap type="ApiKey" id="ApiKeyResult">
+		<id     property="id"           column="id"           />
+		<result property="name"         column="name"         />
+		<result property="apiKey"       column="api_key"      />
+		<result property="platform"     column="platform"     />
+		<result property="url"          column="url"          />
+		<result property="delFlag"      column="del_flag"     />
+		<result property="createBy"     column="create_by"    />
+		<result property="createTime"   column="create_time"  />
+		<result property="updateBy"     column="update_by"    />
+		<result property="updateTime"   column="update_time"  />
+		<result property="remark"       column="remark"       />
+	</resultMap>
+
+	<sql id="selectApiKeyVo">
+        select id, name, api_key, platform, url, create_by, create_time, update_by, update_time, remark
+		from ai_api_key where del_flag = '0'
+    </sql>
+    
+    <select id="selectApiKeyList" parameterType="ApiKey" resultMap="ApiKeyResult">
+		<include refid="selectApiKeyVo"/>
+		<if test="name != null and name != ''">
+			and name = #{name}
+		</if>
+		<if test="platform != null and platform != ''">
+			and platform = #{platform}
+		</if>
+	</select>
+
+	<select id="selectApiKeyById" parameterType="Long" resultMap="ApiKeyResult">
+		<include refid="selectApiKeyVo"/>
+		and id = #{id}
+	</select>
+	
+	
+	<update id="updateApiKey" parameterType="ApiKey">
+		update ai_api_key
+		<set>
+			<if test="name != null and name != ''">name = #{name},</if>
+			<if test="apiKey != null and apiKey != ''">api_key = #{apiKey},</if>
+			<if test="remark != null and remark != ''">remark = #{remark},</if>
+			<if test="platform != null and platform != ''">platform = #{platform},</if>
+			<if test="url != null and url != ''">url = #{url},</if>
+			<if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+			update_time = sysdate()
+		</set>
+		where id = #{id}
+	</update>
+
+	<insert id="insertApiKey" parameterType="ApiKey">
+		insert into ai_api_key(
+		<if test="name != null and name != ''">name,</if>
+		<if test="apiKey != null and apiKey != ''">api_key,</if>
+		<if test="platform != null and platform != ''">platform,</if>
+		<if test="url != null and url != ''">url,</if>
+		<if test="remark != null and remark != ''">remark,</if>
+		<if test="createBy != null and createBy != ''">create_by,</if>
+		create_time
+		)values(
+		<if test="name != null and name != ''">#{name},</if>
+		<if test="apiKey != null and apiKey != ''">#{apiKey},</if>
+		<if test="platform != null and platform != ''">#{platform},</if>
+		<if test="url != null and url != ''">#{url},</if>
+		<if test="remark != null and remark != ''">#{remark},</if>
+		<if test="createBy != null and createBy != ''">#{createBy},</if>
+		sysdate()
+		)
+	</insert>
+	
+	<delete id="deleteApiKeyById" parameterType="Long">
+	    update ai_api_key set del_flag = '2' where id = #{id}
+	</delete>
+
+</mapper> 
