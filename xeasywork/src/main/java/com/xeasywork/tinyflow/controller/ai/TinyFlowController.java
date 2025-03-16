@@ -72,6 +72,11 @@ public class TinyFlowController extends BaseController {
         return success(tinyFlowService.selectTinyFlowById(id));
     }
 
+    /**
+     * 流程运行
+     * @param tinyFlow 工作流信息
+     * @return 结果
+     */
     @PostMapping("/goRun")
     public AjaxResult goRun(@Validated @RequestBody TinyFlow tinyFlow) {
         return success(tinyFlowService.runFlow(tinyFlow));
