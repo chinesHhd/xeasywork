@@ -13,6 +13,7 @@ public class ApiKey extends BaseEntity {
     private String name;
     private String apiKey;
     private String platform;
+    private String model;
     private String url;
 
 }

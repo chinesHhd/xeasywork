@@ -19,9 +19,9 @@ export function allListApiKey(query) {
 }
 
 // 查询参数详细
-export function getApiKey(configId) {
+export function getApiKey(id) {
     return request({
-        url: '/ai/console/key/' + configId,
+        url: '/ai/console/key/' + id,
         method: 'get'
     })
 }
@@ -45,9 +45,9 @@ export function updateApiKey(data) {
 }
 
 // 删除参数配置
-export function delApiKey(configId) {
+export function delApiKey(id) {
     return request({
-        url: '/ai/console/key/' + configId,
+        url: '/ai/console/key/' + id,
         method: 'delete'
     })
 }

@@ -9,6 +9,7 @@
 		<result property="name"         column="name"         />
 		<result property="apiKey"       column="api_key"      />
 		<result property="platform"     column="platform"     />
+		<result property="model"        column="model"        />
 		<result property="url"          column="url"          />
 		<result property="delFlag"      column="del_flag"     />
 		<result property="createBy"     column="create_by"    />
@@ -19,7 +20,7 @@
 	</resultMap>
 
 	<sql id="selectApiKeyVo">
-        select id, name, api_key, platform, url, create_by, create_time, update_by, update_time, remark
+        select id, name, api_key, platform, model, url, create_by, create_time, update_by, update_time, remark
 		from ai_api_key where del_flag = '0'
     </sql>
     

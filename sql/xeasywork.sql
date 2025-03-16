@@ -11,7 +11,7 @@
  Target Server Version : 80033
  File Encoding         : 65001
 
- Date: 15/03/2025 16:01:28
+ Date: 16/03/2025 15:58:45
 */
 
 SET NAMES utf8mb4;
@@ -26,6 +26,7 @@ CREATE TABLE `ai_api_key`  (
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '名称',
   `api_key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '密钥',
   `platform` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '平台',
+  `model` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '模型',
   `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '自定义 API 地址',
   `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '创建者',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
@@ -34,12 +35,57 @@ CREATE TABLE `ai_api_key`  (
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'AI API 密钥表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'AI API 密钥表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of ai_api_key
 -- ----------------------------
-INSERT INTO `ai_api_key` VALUES (1, '测试ai(需要换成自己的)', 'sk-19xxxxxxxxxxxxxxxxxdbc', 'TongYi', NULL, 'admin', '2025-03-14 23:00:40', 'admin', '2025-03-15 10:45:23', NULL, '0');
+INSERT INTO `ai_api_key` VALUES (1, '测试ai', 'sk-19xxxxxxxxxxxxxxxxxdbc', 'TongYi', 'qwen-plus', NULL, 'admin', '2025-03-14 23:00:40', 'admin', '2025-03-15 10:45:23', NULL, '0');
+
+-- ----------------------------
+-- Table structure for ai_chat_session
+-- ----------------------------
+DROP TABLE IF EXISTS `ai_chat_session`;
+CREATE TABLE `ai_chat_session`  (
+  `id` int(0) NOT NULL AUTO_INCREMENT COMMENT '聊天会话ID',
+  `user_id` bigint(0) NULL DEFAULT NULL COMMENT '用户ID',
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '聊天会话名',
+  `memory` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '聊天会话记忆',
+  `model_id` int(0) NULL DEFAULT NULL COMMENT '模型id',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '聊天会话表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of ai_chat_session
+-- ----------------------------
+INSERT INTO `ai_chat_session` VALUES (49, 1, '你好啊\n', NULL, 1, '2025-03-16 12:37:33');
+INSERT INTO `ai_chat_session` VALUES (57, 1, '你在干啥\n', NULL, 1, '2025-03-16 15:48:24');
+
+-- ----------------------------
+-- Table structure for ai_chat_session_detail
+-- ----------------------------
+DROP TABLE IF EXISTS `ai_chat_session_detail`;
+CREATE TABLE `ai_chat_session_detail`  (
+  `id` int(0) NOT NULL AUTO_INCREMENT COMMENT '聊天会话详细ID',
+  `session_id` int(0) NULL DEFAULT NULL COMMENT '聊天会话ID',
+  `role` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '会话角色 user:用户 ai:AI',
+  `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '聊天内容',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '聊天会话详情表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of ai_chat_session_detail
+-- ----------------------------
+INSERT INTO `ai_chat_session_detail` VALUES (136, 49, 'user', '你好啊\n', '2025-03-16 12:37:33');
+INSERT INTO `ai_chat_session_detail` VALUES (137, 49, 'assistant', '你好！今天过得怎么样？', '2025-03-16 12:37:34');
+INSERT INTO `ai_chat_session_detail` VALUES (138, 49, 'user', '你是谁\n', '2025-03-16 12:37:37');
+INSERT INTO `ai_chat_session_detail` VALUES (139, 49, 'assistant', '我是通义千问，阿里巴巴集团旗下的通义实验室自主研发的超大规模语言模型。我能够回答问题、创作文字，比如写故事、写公文、写邮件、写剧本、逻辑推理、编程等等，还能表达观点，玩游戏等。如果你有任何问题或需要帮助，欢迎随时告诉我！', '2025-03-16 12:37:40');
+INSERT INTO `ai_chat_session_detail` VALUES (140, 49, 'user', '你会干什么\n', '2025-03-16 12:37:41');
+INSERT INTO `ai_chat_session_detail` VALUES (141, 49, 'assistant', '我会帮助回答用户的各种问题，包括但不限于：知识性问题、生活常识、情感交流、技能学习等。我还可以生成各种文本，如故事、公文、邮件、剧本等，也能进行逻辑推理、编程等任务。如果你有任何具体的需求或问题，欢迎告诉我！', '2025-03-16 12:37:44');
+INSERT INTO `ai_chat_session_detail` VALUES (142, 57, 'user', '你在干啥\n', '2025-03-16 15:48:25');
+INSERT INTO `ai_chat_session_detail` VALUES (143, 57, 'assistant', '我在和你聊天呀。今天过得怎么样？有什么我可以帮你的吗？比如解答问题、玩游戏或者一起 brainstorm 一些创意？', '2025-03-16 15:48:27');
 
 -- ----------------------------
 -- Table structure for ai_tiny_flow
@@ -56,7 +102,7 @@ CREATE TABLE `ai_tiny_flow`  (
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '工作流表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '工作流表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of ai_tiny_flow
@@ -118,7 +164,7 @@ CREATE TABLE `sys_dict_data`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`dict_code`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '字典数据表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 108 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '字典数据表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_dict_data
@@ -177,7 +223,7 @@ CREATE TABLE `sys_dict_type`  (
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`dict_id`) USING BTREE,
   UNIQUE INDEX `dict_type`(`dict_type`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '字典类型表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 101 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '字典类型表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_dict_type
@@ -220,7 +266,7 @@ CREATE TABLE `sys_menu`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '备注',
   PRIMARY KEY (`menu_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2000 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '菜单权限表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2005 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '菜单权限表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_menu
@@ -261,6 +307,7 @@ INSERT INTO `sys_menu` VALUES (2000, 'AI模块', 0, 2, 'ai', NULL, NULL, '', 1, 
 INSERT INTO `sys_menu` VALUES (2001, '工作流', 2000, 2, 'flow', 'ai/flow/index', NULL, '', 1, 0, 'C', '0', '0', 'ai:flow:list', 'flow', 'admin', '2025-03-14 19:18:37', 'admin', '2025-03-14 23:28:34', '');
 INSERT INTO `sys_menu` VALUES (2002, '控制台', 2000, 1, 'console', NULL, NULL, '', 1, 0, 'M', '0', '0', NULL, 'validCode', 'admin', '2025-03-14 22:01:23', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (2003, 'API密钥', 2002, 1, 'key', 'ai/console/key/index', NULL, '', 1, 0, 'C', '0', '0', 'ai:console:key:list', 'key', 'admin', '2025-03-14 22:03:32', 'admin', '2025-03-14 23:29:15', '');
+INSERT INTO `sys_menu` VALUES (2004, 'AI 对话', 2000, 3, 'chat', 'ai/chat/index', NULL, '', 1, 0, 'C', '0', '0', 'ai:chat:list', 'gpt', 'admin', '2025-03-15 17:02:55', 'admin', '2025-03-16 12:54:50', '');
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -419,7 +466,7 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 103, 'admin', '若依', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2025-03-15 12:56:16', 'admin', '2025-03-14 13:33:54', '', '2025-03-15 12:56:16', '管理员');
+INSERT INTO `sys_user` VALUES (1, 103, 'admin', '若依', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2025-03-16 14:04:21', 'admin', '2025-03-14 13:33:54', '', '2025-03-16 14:04:21', '管理员');
 INSERT INTO `sys_user` VALUES (2, 105, 'ry', '若依', '00', 'ry@qq.com', '15666666666', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '2', '127.0.0.1', '2025-03-14 13:33:54', 'admin', '2025-03-14 13:33:54', '', NULL, '测试员');
 
 -- ----------------------------

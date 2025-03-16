@@ -56,7 +56,6 @@ public class TinyFlowServiceImpl implements ITinyFlowService {
 
     @Override
     public Object runFlow(TinyFlow tinyFlow) {
-        System.err.println("----" + tinyFlow.getGraph());
         Map<String, Object> variables = tinyFlow.getParam();
         Tinyflow tinyflow = parseFlowParam(tinyFlow.getGraph());
         return tinyflow.toChain().executeForResult(variables);
@@ -67,12 +66,8 @@ public class TinyFlowServiceImpl implements ITinyFlowService {
         JSONArray nodeArr = json.getJSONArray("nodes");
         for (int i = 0; i < nodeArr.size(); i++) {
             JSONObject node = nodeArr.getJSONObject(i);
-            if (node.getString("type").equals("llmNode")) {
-                node.getJSONObject("data").put("topK", 10);
-                node.getJSONObject("data").put("topP", 0.8);
-                node.getJSONObject("data").put("temperature", 0.8);
-                node.getJSONObject("data").put("maxTokens", 2048);
-            } else if (node.getString("type").equals("httpNode")) {
+            //  因为目前前端http节点有bug，获取不到url参数，此处先写死试用
+            if (node.getString("type").equals("httpNode")) {
                 node.getJSONObject("data").put("url", "http://127.0.0.1:8080/test/getData");
             }
         }

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xeasywork.tinyflow.mapper.ai.ChatSessionMapper">
+
+    <resultMap type="ChatSession" id="ChatSessionResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="title"    column="title"    />
+        <result property="memory"    column="memory"    />
+        <result property="modelId"    column="model_id"    />
+        <result property="platform"    column="platform"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectChatSessionVo">
+        select acs.id, acs.user_id, acs.title, acs.memory, acs.model_id, apk.platform, acs.create_time from ai_chat_session acs left join ai_api_key apk on acs.model_id = apk.id
+    </sql>
+
+    <select id="selectChatSessionList" parameterType="ChatSession" resultMap="ChatSessionResult">
+        <include refid="selectChatSessionVo"/>
+        <where>
+            <if test="userId != null "> and acs.user_id = #{userId}</if>
+            <if test="title != null  and title != ''"> and acs.title = #{title}</if>
+        </where>
+        order by acs.create_time desc
+    </select>
+
+    <select id="selectChatSessionById" parameterType="Long" resultMap="ChatSessionResult">
+        <include refid="selectChatSessionVo"/>
+        where acs.id = #{id}
+    </select>
+
+    <insert id="insertChatSession" parameterType="ChatSession" useGeneratedKeys="true" keyProperty="id">
+        insert into ai_chat_session
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="title != null">title,</if>
+            <if test="memory != null">memory,</if>
+            <if test="modelId != null">model_id,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="title != null">#{title},</if>
+            <if test="memory != null">#{memory},</if>
+            <if test="modelId != null">#{modelId},</if>
+            sysdate()
+        </trim>
+    </insert>
+
+    <update id="updateChatSession" parameterType="ChatSession">
+        update ai_chat_session
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="memory != null">memory = #{memory},</if>
+            <if test="modelId != null">model_id = #{modelId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteChatSessionById" parameterType="Long">
+        delete from ai_chat_session where id = #{id}
+    </delete>
+
+    <delete id="deleteChatSessionByIds" parameterType="String">
+        delete from ai_chat_session where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
