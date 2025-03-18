@@ -34,6 +34,7 @@
 2.  更新更多ai应用，如：智能客服，数字人、图像理解等实用性功能
 
 #### 使用说明
+![内部接口调用](./images/img_3.png)
 ![智能客服](./images/img.png)
 ![代码运行](./images/img_1.png)
 ![AI对话](./images/img_2.png)

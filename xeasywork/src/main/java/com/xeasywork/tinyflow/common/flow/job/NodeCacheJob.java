@@ -23,7 +23,6 @@ public class NodeCacheJob {
     }
 
     private static void scanForAnnotatedMethods(String packageName, Class<? extends Annotation> annotation) {
-        List<String> result = new ArrayList<>();
         // 配置Reflections实例以扫描指定包下的所有类
         Reflections reflections = new Reflections(new ConfigurationBuilder()
                 .forPackages(packageName)

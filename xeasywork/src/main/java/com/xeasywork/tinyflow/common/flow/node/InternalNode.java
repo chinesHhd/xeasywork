@@ -37,7 +37,6 @@ public class InternalNode extends BaseNode {
         if (method == null) {
             throw new IllegalArgumentException("Method not found: " + methodName);
         }
-
         // 获取方法参数类型
         Class<?>[] parameterTypes = method.getParameterTypes();
         // 准备参数数组
@@ -101,10 +100,9 @@ public class InternalNode extends BaseNode {
                 // 尝试通过无参构造器创建实例
                 return clazz.getDeclaredConstructor().newInstance();
             } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         }
-        return null;
     }
 
 }
