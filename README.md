@@ -18,12 +18,11 @@
 
 #### 安装教程
 
-1.  导入sql
-2.  修改后端yml配置
-3.  将tinyflow-java最新代码打包，放入maven仓库
-4.  cd xeasywork-vue
-5.  npm i
-6.  npm run dev
+1. 导入sql
+2. 修改后端yml配置
+3. cd xeasywork-vue
+4. npm i
+5. npm run dev
 
 #### 更新教程
 1.  新建数据库导入sql文件

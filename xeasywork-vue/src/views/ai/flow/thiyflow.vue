@@ -1,13 +1,13 @@
 <script setup name="TinyFlow">
 import Tinyflow from "@/components/TinyFlow/Tinyflow.vue";
 import { ref } from 'vue';
-import {getFlow, goRunFlow, updateFlow} from "@/api/ai/flow.js";
+import {getFlow, getMethods, goRunFlow, updateFlow} from "@/api/ai/flow.js";
 import { allListApiKey } from "@/api/ai/console/key.js";
 
 const route = useRoute()
 const tinyflowRef = ref(null)
 const showPreview = ref(false)
-const provider = ref({ llm: () => [], knowledge: () => [] }) // 初始化默认值
+const provider = ref({ llm: () => [], knowledge: () => [], internal: () => [] }) // 初始化默认值
 const initialData = ref(null)
 const params = ref([{ key: '', value: '' }]) // 参数列表
 const runResult = ref(null)
@@ -29,9 +29,10 @@ const removeParam = (index) => {
 // 并行请求数据
 const loadData = async () => {
   try {
-    const [apiKeys, flowData] = await Promise.all([
+    const [apiKeys, flowData, methods] = await Promise.all([
       allListApiKey(),
-      getFlow(route.params.id)
+      getFlow(route.params.id),
+      getMethods()
     ])
 
     // 更新 provider
@@ -40,7 +41,11 @@ const loadData = async () => {
         value: id,
         label: name
       })),
-      knowledge: () => []
+      knowledge: () => [],
+      internal: () => methods.data.map(item => ({
+        value: item,
+        label: item
+      })),
     }
 
     // 更新流程图数据

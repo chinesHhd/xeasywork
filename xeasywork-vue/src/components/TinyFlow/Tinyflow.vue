@@ -14,6 +14,7 @@ const props = defineProps<{
     provider?: {
         llm?: () => Item[] | Promise<Item[]>;
         knowledge?: () => Item[] | Promise<Item[]>;
+      internal?: () => Item[] | Promise<Item[]>;
     };
 }>();
 
@@ -23,6 +24,7 @@ let tinyflow: TinyflowNative | null = null;
 const defaultProvider = {
     llm: () => [] as Item[],
     knowledge: () => [] as Item[],
+    internal: () => [] as Item[],
 };
 
 onMounted(() => {

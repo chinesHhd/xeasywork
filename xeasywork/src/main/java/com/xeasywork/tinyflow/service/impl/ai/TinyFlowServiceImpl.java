@@ -6,6 +6,7 @@ import com.agentsflex.llm.qwen.QwenLlm;
 import com.agentsflex.llm.qwen.QwenLlmConfig;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.xeasywork.tinyflow.common.flow.parser.InternalNodeParser;
 import com.xeasywork.tinyflow.domain.ai.ApiKey;
 import com.xeasywork.tinyflow.domain.ai.TinyFlow;
 import com.xeasywork.tinyflow.mapper.ai.TinyFlowMapper;
@@ -96,8 +97,8 @@ public class TinyFlowServiceImpl implements ITinyFlowService {
                             break;
                     }
                     break;
-                case "zsk":
-
+                case "internalNode":
+                    tinyflow.getChainParser().addNodeParser("internalNode", new InternalNodeParser());
                     break;
                 default:
                     break;

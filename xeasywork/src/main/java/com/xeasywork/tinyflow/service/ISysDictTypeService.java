@@ -1,5 +1,6 @@
 package com.xeasywork.tinyflow.service;
 
+import com.xeasywork.tinyflow.common.annotation.MethodName;
 import com.xeasywork.tinyflow.common.core.domain.entity.SysDictData;
 import com.xeasywork.tinyflow.common.core.domain.entity.SysDictType;
 
@@ -15,6 +16,7 @@ public interface ISysDictTypeService {
      * @param dictType 字典类型信息
      * @return 字典类型集合信息
      */
+    @MethodName
     List<SysDictType> selectDictTypeList(SysDictType dictType);
 
     /**
@@ -22,6 +24,7 @@ public interface ISysDictTypeService {
      *
      * @return 字典类型集合信息
      */
+    @MethodName
     List<SysDictType> selectDictTypeAll();
 
     /**

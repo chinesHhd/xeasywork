@@ -1,8 +1,10 @@
 package com.xeasywork.tinyflow.controller.ai;
 
+import com.xeasywork.tinyflow.common.annotation.MethodName;
 import com.xeasywork.tinyflow.common.core.controller.BaseController;
 import com.xeasywork.tinyflow.common.core.domain.AjaxResult;
 import com.xeasywork.tinyflow.common.core.page.TableDataInfo;
+import com.xeasywork.tinyflow.common.flow.cache.MethodCache;
 import com.xeasywork.tinyflow.domain.ai.TinyFlow;
 import com.xeasywork.tinyflow.service.ai.ITinyFlowService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -71,6 +73,16 @@ public class TinyFlowController extends BaseController {
     public AjaxResult getInfo(@PathVariable Long id) {
         return success(tinyFlowService.selectTinyFlowById(id));
     }
+
+    /**
+     * 根据编号获取详细信息
+     */
+    @GetMapping("/getMethods")
+    public AjaxResult getMethods() {
+        return success(MethodCache.getMethodNames());
+    }
+
+
 
     /**
      * 流程运行

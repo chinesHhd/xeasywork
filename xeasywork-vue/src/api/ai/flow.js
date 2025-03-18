@@ -51,3 +51,11 @@ export function goRunFlow(data) {
     data: data
   })
 }
+
+// 新增参数配置
+export function getMethods() {
+  return request({
+    url: '/ai/flow/getMethods',
+    method: 'get'
+  })
+}
