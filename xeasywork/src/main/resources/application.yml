@@ -60,8 +60,8 @@ spring:
         allow:
         url-pattern: /druid/*
         # 控制台管理用户名和密码
-        login-username: admin
-        login-password: 123456
+        login-username: XEasyWork
+        login-password: XEasyWork
       filter:
         stat:
           enabled: true

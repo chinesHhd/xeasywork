@@ -182,7 +182,6 @@
                 <version>${spring-boot.version}</version>
                 <configuration>
                     <mainClass>com.xeasywork.tinyflow.XEasyWorkApplication</mainClass>
-                    <skip>true</skip>
                 </configuration>
                 <executions>
                     <execution>

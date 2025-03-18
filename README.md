@@ -16,6 +16,11 @@
 - [Agents-Flex](https://gitee.com/agents-flex/agents-flex)（ 一个基于 Java 的 LLM（大语言模型）应用开发框架。）  
 - [EasyAi](https://gitee.com/dromara/easyAi)（国内TOP1开源原生Java人工智能算法框架）
 
+#### 体验地址
+http://xeasywork.thrgoldyo.cn/
+
+账号同密码：XEasyWork
+
 #### 安装教程
 
 1. 导入sql

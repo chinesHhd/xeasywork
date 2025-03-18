@@ -185,7 +185,7 @@ import { listDetail } from '@/api/ai/chat/chatSessionDetail'
 import { streamChat } from '@/api/ai/chat/chatBox'
 import { getToken } from '@/utils/auth'
 import userAvatar from '@/assets/images/profile.jpg'
-import qwqAI from '@/assets/images/ai/qwq-ai.png'
+import qwenAi from '@/assets/images/ai/qwen-ai.png'
 import deepseekAI from '@/assets/images/ai/deepseek-ai.png'
 import {allListApiKey, getApiKey, listApiKey} from "@/api/ai/console/key.js";
 
@@ -195,7 +195,7 @@ const getAvatar = (role) => {
   if (role === 'user') return userAvatar
   switch (model.platform) {
     case 'TongYi':
-      return qwqAI;
+      return qwenAi;
     case 'DeepSeek':
       return deepseekAI;
     default:

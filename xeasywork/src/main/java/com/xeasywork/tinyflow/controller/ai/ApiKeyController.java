@@ -36,7 +36,6 @@ public class ApiKeyController extends BaseController {
     /**
      * 获取工作流列表
      */
-    @PreAuthorize("@ss.hasPermi('ai:console:key:list')")
     @GetMapping("/allList")
     public AjaxResult allList(ApiKey apiKey) {
         List<ApiKey> list = apiKeyService.selectApiKeyList(apiKey);
