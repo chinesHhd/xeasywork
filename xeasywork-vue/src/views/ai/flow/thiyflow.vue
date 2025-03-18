@@ -1,6 +1,6 @@
 <script setup name="TinyFlow">
 import Tinyflow from "@/components/TinyFlow/Tinyflow.vue";
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import {getFlow, getMethods, goRunFlow, updateFlow} from "@/api/ai/flow.js";
 import { allListApiKey } from "@/api/ai/console/key.js";
 
@@ -9,7 +9,9 @@ const tinyflowRef = ref(null)
 const showPreview = ref(false)
 const provider = ref({ llm: () => [], knowledge: () => [], internal: () => [] }) // 初始化默认值
 const initialData = ref(null)
-const params = ref([{ key: '', value: '' }]) // 参数列表
+const params = ref([]) // 参数列表
+// 用于用户添加参数时做选择
+const paramDefinitionsForStartNode = ref({})
 const runResult = ref(null)
 const loading = ref(false)
 const error = ref(null)
@@ -66,6 +68,52 @@ const togglePreview = () => {
   showPreview.value = !showPreview.value;
 };
 
+
+watch(showPreview, value => {
+  if (!value) return;
+
+  
+  /// 查找start节点
+  const startNode = getStartNode();
+
+  // 获取参数定义
+  const parameters = startNode.data?.parameters || []
+  const paramDefinitions = {}
+
+
+  // 加入参数选项方便用户添加非必须参数
+  parameters.forEach(param => {
+    paramDefinitions[param.name] = param
+  })
+  
+
+  function mergeIfRequiredButNotSet(target) {
+    let needPushList = [];
+
+    for (let key in paramDefinitions) {
+      let param = paramDefinitions[key];
+
+      if (param.required) {
+        let item = target.find(item => item.key === key);
+
+        if (!item) {
+          needPushList.push({ key: param.name, value: param.defaultValue || '' })
+        }
+      }
+    }
+
+    target.push(...needPushList);
+  }
+
+  // todo 是否移除已被开始节点移除的参数？
+  
+  // 自动装载需必填的参数
+  mergeIfRequiredButNotSet(params.value);
+
+  paramDefinitionsForStartNode.value = paramDefinitions;
+})
+
+
 const save = () => {
   const val = tinyflowRef.value.getData()
   const data = {
@@ -84,10 +132,7 @@ const goRun = async () => {
     error.value = null
     runResult.value = null
     /// 查找start节点
-    const startNode = val.nodes.find(node => node.type === 'startNode')
-    if (!startNode) {
-      throw new Error('流程缺少起始节点')
-    }
+    const startNode = getStartNode();
 
     debugger
     // 获取参数定义
@@ -127,6 +172,18 @@ const goRun = async () => {
   } finally {
     loading.value = false
   }
+}
+
+const getStartNode = () => {
+    const val = tinyflowRef.value.getData()
+
+    /// 查找start节点
+    const startNode = val.nodes.find(node => node.type === 'startNode')
+    if (!startNode) {
+      throw new Error('流程缺少起始节点')
+    }
+
+    return startNode;
 }
 
 // 类型转换函数
@@ -174,7 +231,11 @@ const convertParamValue = (value, dataType) => {
             v-model="param.key"
             placeholder="参数名"
             class="param-input"
-        >
+            list="params" />
+        
+        <datalist id="params">
+          <option :value="key" v-for="(value, key) in paramDefinitionsForStartNode" :disabled="!!value?.disabled">{{ value?.description || key }}</option>
+        </datalist>
         <input
             v-model="param.value"
             placeholder="参数值"
