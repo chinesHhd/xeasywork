@@ -1,6 +1,5 @@
 <script setup name="TinyFlow">
-import { Tinyflow } from '@tinyflow-ai/vue';
-import '@tinyflow-ai/vue/dist/index.css';
+import Tinyflow from "@/components/TinyFlow/Tinyflow.vue";
 import { ref } from 'vue';
 import {getFlow, goRunFlow, updateFlow} from "@/api/ai/flow.js";
 import { allListApiKey } from "@/api/ai/console/key.js";

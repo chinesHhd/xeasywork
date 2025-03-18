@@ -64,13 +64,6 @@ public class TinyFlowServiceImpl implements ITinyFlowService {
     private Tinyflow parseFlowParam(String graph) {
         JSONObject json = JSONObject.parseObject(graph);
         JSONArray nodeArr = json.getJSONArray("nodes");
-        for (int i = 0; i < nodeArr.size(); i++) {
-            JSONObject node = nodeArr.getJSONObject(i);
-            //  因为目前前端http节点有bug，获取不到url参数，此处先写死试用
-            if (node.getString("type").equals("httpNode")) {
-                node.getJSONObject("data").put("url", "http://127.0.0.1:8080/test/getData");
-            }
-        }
         Tinyflow  tinyflow = new Tinyflow(json.toJSONString());;
         for (int i = 0; i < nodeArr.size(); i++) {
             JSONObject node = nodeArr.getJSONObject(i);
@@ -81,6 +74,8 @@ public class TinyFlowServiceImpl implements ITinyFlowService {
                     switch (apiKey.getPlatform()) {
                         case "OpenAI":
                             OpenAILlmConfig openAILlmConfig = new OpenAILlmConfig();
+                            openAILlmConfig.setApiKey(apiKey.getApiKey());
+                            openAILlmConfig.setModel(apiKey.getModel());
                             tinyflow.setLlmProvider(id -> new OpenAILlm(openAILlmConfig));
                             break;
                         case "Ollama":
@@ -92,7 +87,7 @@ public class TinyFlowServiceImpl implements ITinyFlowService {
                         case "TongYi":
                             QwenLlmConfig qwenLlmConfig = new QwenLlmConfig();
                             qwenLlmConfig.setApiKey(apiKey.getApiKey());
-                            qwenLlmConfig.setModel("qwen-plus");
+                            qwenLlmConfig.setModel(apiKey.getModel());
                             tinyflow.setLlmProvider(id -> new QwenLlm(qwenLlmConfig));
                             break;
                         case "DeepSeek":

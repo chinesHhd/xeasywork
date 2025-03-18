@@ -17,7 +17,7 @@ public class TinyFlow extends BaseEntity {
     private String graph;
     private Map<String, Object> param;
 
-    public void setGraph(String graph) {
-        this.graph = StringUtils.isNull(graph) ? "{}" : graph;
+    public String getGraph() {
+        return StringUtils.isEmpty(graph) ? "{}" : graph;
     }
 }

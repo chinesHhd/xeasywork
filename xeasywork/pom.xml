@@ -121,13 +121,13 @@
 
         <dependency>
             <groupId>dev.tinyflow</groupId>
-            <artifactId>tinyflow-java</artifactId>
-            <version>0.0.2</version>
+            <artifactId>tinyflow-java-core</artifactId>
+            <version>1.0.0-rc.3</version>
         </dependency>
         <dependency>
             <groupId>com.agentsflex</groupId>
             <artifactId>agents-flex-bom</artifactId>
-            <version>1.0.0-rc.6</version>
+            <version>1.0.0-rc.8</version>
         </dependency>
 
         <dependency>
